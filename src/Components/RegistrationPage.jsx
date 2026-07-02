@@ -1,13 +1,32 @@
-import React from 'react'
-import { useForm } from "react-hook-form"
+import React, { useState } from 'react'
+
 
 
 const Registrationform = () => {
- const {  register, handleSubmit, watch,formState: { errors } } = useForm()
+  const [name , setName] = useState("");
+  const [mobile , setMobile] = useState("");
+  const [email , setEmail] = useState("");
 
- function onSubmit(data){
-    console.log("Registering the Form",data)
- }
+  const handleInputChange = (e) =>{
+   const {name , value} =e.target;
+   if (name === "name"){
+    setName(value);
+   }else if (name === "mobile"){
+    setMobile(value);
+   }else if (name === "email" ){
+    setEmail(value);
+   }
+  };
+  const handleFormSubmit =(event) =>{
+    event.preventDefault()
+    const formData = {
+      name,
+      mobile,
+      email,
+    }
+    console.log(formData)
+  }
+
 
   return (
     
@@ -20,7 +39,9 @@ const Registrationform = () => {
          </div> 
 
 
-        <form className='space-y-5 '>    
+        <form  
+        onSubmit ={handleFormSubmit}
+         className='space-y-5 ' >    
       <div className='justify-between rounded-3xl shadow-2xl p-4 bg-transparent'>
         <div className='flex justify-center items-center '>
         <label className='flex align-item-center justify-center p-4 px-2 py-3 text-black font-medium mb-2'>Full Name</label>
@@ -28,7 +49,8 @@ const Registrationform = () => {
         type='text' 
         id='name' 
         name='name'
-        {...register('name')}
+        value={name}
+        onChange={handleInputChange}
          placeholder='Enter Name' />
 
       </div>
@@ -36,9 +58,10 @@ const Registrationform = () => {
         <label className='flex align-item-center justify-center p-4 text-black font-medium mb-2'>Mobile</label>
         <input className='flex align-item-center justify-center p-4 border rounded focus:ring-2 focus:ring-yellow-500 focus:outline-none' 
         type="tel"
-        id='Mobile'
-        name='Mobile'
-        {...register('mobile')}
+        id='mobile'
+        name='mobile'
+        value={mobile}
+        onChange={handleInputChange}
         placeholder='Enter Mobile no.' />
 
       </div>
@@ -47,17 +70,20 @@ const Registrationform = () => {
         <input className='flex align-item-center justify-center p-4  border rounded focus:ring-2 focus:ring-yellow-500 focus:outline-none' 
         type="text" 
         id='email' 
-        name='email' 
-        {...register('email')}
+        name='email'
+        value={email} 
+        onChange={handleInputChange}
         placeholder='Enetr Email ID'/>
 
       </div>
       <div className='flex justify-center items-center p-4 gap-6'>
-        <button className='bg-amber-300 text-black rounded  cursor-pointer active:scale-95 px-4 py-2 font-semibold ' onSubmit={handleSubmit(onSubmit)}>
-            
+        <button  type='submit'
+        className='bg-amber-300 text-black rounded  cursor-pointer active:scale-95 px-4 py-2 font-semibold '>
+        
             Register 
             </button>
-        <button className='bg-amber-300 text-black rounded  cursor-pointer active:scale-95 px-4 py-2 font-semibold '>
+        <button type='button'
+        className='bg-amber-300 text-black rounded  cursor-pointer active:scale-95 px-4 py-2 font-semibold '>
             Unlock  
             </button>
       </div>
