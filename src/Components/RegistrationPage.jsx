@@ -21,9 +21,13 @@ const Registrationform = () => {
    }
   };
 
-  const handleCapture =(image) =>{
+  const handleCapture =(image) => {
     setCapturedImage(image);
-    setShowCamera(false);
+    setShowCamera(true);
+    console.log("Captured image")
+    return () => {
+      stopCamera();
+    }
   }
 
 
@@ -89,7 +93,7 @@ const Registrationform = () => {
       <div className='flex justify-center items-center p-4 gap-6'>
      
         <button type='button'
-        onClick={()=> setShowCamera(true)}
+        onClick= {handleCapture}
         className=' bg-amber-300 text-black rounded  w-60 cursor-pointer active:scale-95 px-10 py-3 font-semibold align-center '>
           Capture
           </button>
@@ -113,7 +117,19 @@ const Registrationform = () => {
       </form>
 
       {showCamera && (
-        <CameraCapture onCapture={handleCapture} />
+        
+  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-xl shadow-xl">
+      <CameraCapture onCapture={handleCapture} />
+
+      <button
+        onClick={() => setShowCamera(false)}
+        className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+      >
+        
+      </button>
+    </div>
+  </div>
 )}
 
 {capturedImage && (

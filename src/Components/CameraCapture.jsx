@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const CameraCapture = ({ onCapture }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const streamRef = useref(null);
+  const streamRef = useRef(null);
 
   useEffect(() => {
     startCamera();
@@ -20,8 +20,12 @@ const CameraCapture = ({ onCapture }) => {
       });
 
       streamRef.current = mediaStream;
-      videoRef.current.srcObject = mediaStream;
-    
+      if(videoRef.current){
+        videoRef.current.srcObject = mediaStream;
+        videoRef.current.onloadedmetradata = () => {
+          videoRef.current.play();
+        };
+      }
     } catch (error) {
       console.error(error);
       alert("Camera Permission Denied");
@@ -35,22 +39,26 @@ const CameraCapture = ({ onCapture }) => {
   };
 
   const captureImage = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
+  const video = videoRef.current;
+  const canvas = canvasRef.current;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+  if (!video || !canvas || video.videoWidth === 0) {
+    alert("Camera is not ready.");
+    return;
+  }
 
-    const ctx = canvas.getContext("2d");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-    ctx.drawImage(video, 0, 0);
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0);
 
-    const image = canvas.toDataURL("image/png");
+  const image = canvas.toDataURL("image/png");
 
-    onCapture(image);
+  onCapture(image);
 
-    stopCamera();
-  };
+ 
+};
 
   return (
     <div className="flex flex-col items-center mt-5">
