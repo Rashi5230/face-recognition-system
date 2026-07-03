@@ -1,6 +1,7 @@
 import React from 'react'
 import RegistrationPage  from './Components/RegistrationPage'
 
+
 const App = () => {
   return (
     <div>
